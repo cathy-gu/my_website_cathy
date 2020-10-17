@@ -23,7 +23,7 @@ library(here)
 
 My name is **Yuanmeng Gu**. You can call me **Cathy**. I am a goal-oriented and self-motivated person. Everytime I set a goal for myself, I will try my best to achieve it. 
 
-![](aboutme.jpeg)
+![](aboutme.jpeg){height=120, width=120%}
 
 ### Education
 
@@ -36,7 +36,8 @@ My name is **Yuanmeng Gu**. You can call me **Cathy**. I am a goal-oriented and 
 
 In terms of my internship, I had 4 internships in total. One in Institutional Sales, one in Investment Banking and two in Research. Through these internships, I became clearer that my passion and interest is indeed in finance industry. 
 
-![](work.jpg)
+![](work.jpg){width=150%}
+
 
 ### Hobbies & Interests
 

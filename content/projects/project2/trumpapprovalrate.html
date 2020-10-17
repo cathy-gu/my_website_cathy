@@ -11,7 +11,6 @@
 
 <meta name="author" content="Cathy-Yuanmeng-Gu" />
 
-<meta name="date" content="2020-10-03" />
 
 <title>Trump’s Approval Margins</title>
 
@@ -569,13 +568,12 @@ summary {
 
 <h1 class="title toc-ignore">Trump’s Approval Margins</h1>
 <h4 class="author">Cathy-Yuanmeng-Gu</h4>
-<h4 class="date">2020-10-03</h4>
 
 </div>
 
 
-<div id="trumps-approval-margins" class="section level1">
-<h1>Trump’s Approval Margins</h1>
+<div id="background" class="section level2">
+<h2>Background</h2>
 <p>As we saw in class, fivethirtyeight.com has detailed data on <a href="https://projects.fivethirtyeight.com/trump-approval-ratings">all polls that track the president’s approval</a></p>
 <pre class="r"><code># Import approval polls data
 approval_polllist &lt;- read_csv(here::here(&#39;data&#39;, &#39;approval_polllist.csv&#39;))
@@ -636,6 +634,7 @@ glimpse(approval_polllist_cleaned)</code></pre>
 ## $ question_id         &lt;dbl&gt; 77265, 77261, 77599, 77274, 77598, 77278, 77272, …
 ## $ createddate         &lt;date&gt; 2017-01-23, 2017-01-23, 2017-03-01, 2017-01-24, …
 ## $ timestamp           &lt;dttm&gt; 2020-09-27 00:45:20, 2020-09-27 00:45:20, 2020-0…</code></pre>
+</div>
 <div id="create-a-plot" class="section level2">
 <h2>Create a plot</h2>
 <p>We calculate the average net approval rate for each week to see how public opinion has evolved over his presidency.</p>
@@ -644,17 +643,12 @@ glimpse(approval_polllist_cleaned)</code></pre>
 approval_pollist_summary &lt;- approval_polllist_cleaned %&gt;% 
   #Keep only voters as the subgroup
   filter(subgroup==&quot;Voters&quot;) %&gt;% 
-  mutate(week = week(enddate), 
-         year = year(enddate)) %&gt;% 
+  mutate(week = week(enddate), year = year(enddate)) %&gt;% 
   mutate(avg_net_approval = adjusted_approve - adjusted_disapprove, year = year(enddate)) %&gt;% 
   group_by(week, year) %&gt;% 
   #Calculate average net rate on a weekly basis 
   #Definine confidence intervals
-  summarise(year = year, 
-            week = week, 
-            mean_approval = mean(avg_net_approval), 
-            lower = mean(avg_net_approval) - qt(1- alpha/2, (n() - 1))*sd(avg_net_approval)/sqrt(n()), 
-            upper = mean(avg_net_approval) + qt(1- alpha/2, (n() - 1))*sd(avg_net_approval)/sqrt(n())) %&gt;% 
+  summarise(year = year, week = week, mean_approval = mean(avg_net_approval), lower = mean(avg_net_approval) - qt(1- alpha/2, (n() - 1))*sd(avg_net_approval)/sqrt(n()), upper = mean(avg_net_approval) + qt(1- alpha/2, (n() - 1))*sd(avg_net_approval)/sqrt(n())) %&gt;% 
   unique(by = c(&quot;week&quot;, &quot;year&quot;)) %&gt;% 
   arrange(year, week)
 
@@ -680,8 +674,7 @@ trump_plot</code></pre>
 <p>We compare the confidence intervals for <code>week 15</code> (6-12 April 2020) and <code>week 34</code> (17-23 August 2020).</p>
 <pre class="r"><code>#print a table of related variables for further comparison
 average_per_week_15_34 &lt;- approval_pollist_summary %&gt;% 
-  filter(year == 2020, 
-         week %in% c(15,34)) %&gt;% 
+  filter(year == 2020, week %in% c(15,34)) %&gt;% 
   mutate(upper_minus_lower = upper - lower) 
 
 kbl(average_per_week_15_34) %&gt;% 
@@ -756,7 +749,6 @@ upper_minus_lower
 <blockquote>
 <p>When looking at the interval from week 15 (6-12 April 2020) to week 34 (17-23 August 2020) we can see that while the average net approval is decreasing, the 95% confidence interval is growing. The observed decline in average net approval is to be expected, as Trump’s handling of the Covid-19 pandemic has been sloppy and the U.S. becomes one of the most severe outbreaks of the virus, given poorly enforced and coordinated federal measures and weak norm compliance. The increase in the confidence interval could be due to the uncertain times right now, leading people to be more undecided and unsure about their vote.</p>
 </blockquote>
-</div>
 </div>
 
 
